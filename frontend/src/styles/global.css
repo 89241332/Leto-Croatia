@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Hanken Grotesk', sans-serif;
+    background-color: #F6F3EE;
+    color: #001D32;
+    min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #001D32;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand {
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+
+/* Footer */
+.footer {
+    background-color: #001D32;
+    padding: 24px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-brand {
+    color: white;
+    font-weight: 700;
+}
+
+.footer-links {
+    display: flex;
+    gap: 24px;
+}
+
+.footer-links span {
+    color: #9ca3af;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+.footer-links span:hover {
+    color: white;
+}
+
+/* Page wrapper */
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.page-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #50D9FE;
+    color: #001D32;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 24px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #00677D;
+    color: white;
+}
+
+.btn-primary:disabled {
+    background-color: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.btn-outline {
+    background-color: white;
+    color: #001D32;
+    border: 1px solid #001D32;
+    border-radius: 8px;
+    padding: 14px 24px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-outline:hover {
+    background-color: #001D32;
+    color: white;
+}
+
+/* Form elements */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #001D32;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 10px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 0.95rem;
+    color: #001D32;
+    background-color: white;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #50D9FE;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Error and success messages */
+.error-text {
+    color: #ef4444;
+    font-size: 0.875rem;
+}
+
+.success-text {
+    color: #22c55e;
+    font-size: 0.875rem;
+}
+
+/* Links */
+a {
+    color: #50D9FE;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #00677D;
+}
+
+/* Card */
+.card {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+/* Section header with left border accent */
+.section-header {
+    color: #50D9FE;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-left: 4px solid #50D9FE;
+    padding-left: 12px;
+    margin-bottom: 20px;
+}
