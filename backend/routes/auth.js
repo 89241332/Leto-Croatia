@@ -7,7 +7,18 @@ const router = express.Router();
 //POST method /api/auth/register
 router.post('/register', async (req, res) => {
     try {
-        const { first_name, last_name, email, password, role, phone } = req.body;
+        const { first_name, 
+                last_name, 
+                email, 
+                password, 
+                role, 
+                phone, 
+                nationality, 
+                date_of_birth, 
+                business_name, 
+                work_location, 
+                description 
+            } = req.body;
 
         if (!first_name || !last_name || !email || !password || !role) {
             return res.status(400).json({ error: 'All fields are required' });
@@ -15,6 +26,14 @@ router.post('/register', async (req, res) => {
 
         if (role !== 'employer' && role !== 'employee') {
             return res.status(400).json({ error: 'Role must be employer or employee' });
+        }
+
+        if (role === 'employee' && (!nationality || !date_of_birth)) {
+            return res.status(400).json({ error: 'Nationality and date of birth are required for employees' });
+        }
+
+        if (role === 'employer' && (!business_name || !work_location)) {
+            return res.status(400).json({ error: 'Business name and work location are required for employers' });
         }
 
         const [existing] = await pool.query(
@@ -32,8 +51,24 @@ router.post('/register', async (req, res) => {
             [first_name, last_name, email, hashedPassword, role, phone || null]
         );
 
+        const userId = result.insertId;
+
+        if (role === 'employee') {
+            await pool.query(
+                'INSERT INTO employee (nationality, date_of_birth, identity_proof, user_id) VALUES (?, ?, ?, ?)',
+                [nationality, date_of_birth, 'pending', userId]
+            );
+        }
+
+        if (role === 'employer') {
+            await pool.query(
+                'INSERT INTO employer (business_name, work_location, description, proof_document, user_id) VALUES (?, ?, ?, ?, ?)',
+                [business_name, work_location, description || null, 'pending', userId]
+            );
+        }
+
         req.session.user = {
-            id: result.insertId,
+            id: userId,
             first_name,
             last_name,
             email,
@@ -42,7 +77,7 @@ router.post('/register', async (req, res) => {
 
         res.status(201).json({
             message: 'Registration successful',
-            userId: result.insertId,
+            userId,
         });
     } catch (error) {
         res.status(500).json({ error: error.message });
