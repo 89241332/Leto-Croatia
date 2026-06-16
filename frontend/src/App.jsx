@@ -8,6 +8,8 @@ export default function App() {
       <AuthProvider>
         <Routes>
           <Route path='/register' element={<Register />} />
+          <Route path='/register/employee' element={<RegisterEmployee />} />
+          <Route path='/register/employer' element={<RegisterEmployer />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
