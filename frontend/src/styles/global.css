@@ -292,3 +292,82 @@ a:hover {
     margin-top: 16px;
     color: #6b7280;
 }
+
+/* Registration Forms */
+.register-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.register-form-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.register-form-card {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 40px;
+    width: 100%;
+    max-width: 660px;
+}
+
+.register-form-card h1 {
+    font-size: 1.75rem;
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.register-form-section {
+    border-left: 4px solid #50D9FE;
+    padding-left: 12px;
+    margin-bottom: 24px;
+}
+
+.register-form-section h2 {
+    color: #50D9FE;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.form-row-full {
+    margin-bottom: 16px;
+}
+
+.register-form-footer {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.register-form-footer .btn-primary {
+    width: 100%;
+}
+
+.register-form-footer p {
+    color: #6b7280;
+}
+
+.error-box {
+    background-color: #fef2f2;
+    border: 1px solid #fca5a5;
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-bottom: 16px;
+}
