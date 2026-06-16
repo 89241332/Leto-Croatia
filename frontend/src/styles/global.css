@@ -193,3 +193,102 @@ a:hover {
     padding-left: 12px;
     margin-bottom: 20px;
 }
+
+/* Register - Role Selection */
+.register-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.register-hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.register-hero h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.register-hero p {
+    color: #6b7280;
+    margin-bottom: 40px;
+}
+
+.role-cards {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.role-card {
+    background-color: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 32px 24px;
+    width: 240px;
+    cursor: pointer;
+}
+
+.role-card.selected {
+    border-color: #50D9FE;
+    background-color: #E0F7FA;
+}
+
+.role-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 1.5rem;
+}
+
+.role-card h3 {
+    margin-bottom: 8px;
+}
+
+.role-badge-employee {
+    background-color: #e5e7eb;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.role-badge-employer {
+    background-color: #001D32;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.role-card-btn {
+    margin-top: 24px;
+    width: 100%;
+}
+
+.register-continue-btn {
+    width: 510px;
+}
+
+.register-note {
+    margin-top: 16px;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.register-login-link {
+    margin-top: 16px;
+    color: #6b7280;
+}
