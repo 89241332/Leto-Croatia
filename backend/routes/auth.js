@@ -100,4 +100,49 @@ router.post('/logout', (req, res) => {
     });
 });
 
+//POST method /api/auth/login
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password are required.' });
+    }
+
+    try {
+        const [users] = await pool.query(
+            'SELECT * FROM user WHERE email = ?',
+            [email]
+        );
+
+        if (users.length === 0) {
+            return res.status(401).json({ error: 'Invalid email or password.' });
+        }
+
+        const user = users[0];
+        const match = await bcrypt.compare(password, user.password);
+
+        if (!match) {
+            return res.status(401).json({ error: 'Invalid email or password.' });
+        }
+
+        req.session.user = {
+            id: user.id,
+            email: user.email,
+            role: user.role
+        };
+
+        return res.status(200).json({
+            message: 'Login successful.',
+            user: {
+                id: user.id,
+                email: user.email,
+                role: user.role
+            }
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Server error.' });
+    }
+});
+
 module.exports = router;
