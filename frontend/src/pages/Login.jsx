@@ -65,7 +65,7 @@ function Login() {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                             <div className="auth-forgot">
-                                <Link to="/reset-password" className="auth-link">Forgot password?</Link>
+                                <Link to="/reset-password" className="auth-link">Reset password</Link>
                             </div>
                             {error && <p className="auth-error">{error}</p>}
                             <button
