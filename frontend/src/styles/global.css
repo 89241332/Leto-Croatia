@@ -371,3 +371,107 @@ a:hover {
     font-size: 0.875rem;
     margin-bottom: 16px;
 }
+
+/* Login / Reset Password */
+.auth-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.auth-card {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 40px;
+    width: 100%;
+    max-width: 480px;
+}
+
+.auth-title {
+    font-size: 1.75rem;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.auth-tabs {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 12px;
+}
+
+.auth-tab-active {
+    font-weight: 700;
+    color: #001D32;
+}
+
+.auth-tab-link {
+    font-weight: 600;
+    color: #50D9FE;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.auth-input {
+    padding: 10px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 0.95rem;
+    color: #001D32;
+    background-color: white;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.auth-input:focus {
+    border-color: #50D9FE;
+}
+
+.auth-forgot {
+    text-align: right;
+}
+
+.auth-btn {
+    background-color: #50D9FE;
+    color: #001D32;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 24px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.auth-btn:hover {
+    background-color: #00677D;
+    color: white;
+}
+
+.auth-btn:disabled {
+    background-color: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.auth-error {
+    color: #ef4444;
+    font-size: 0.875rem;
+}
+
+.auth-footer {
+    margin-top: 24px;
+    color: #6b7280;
+    text-align: center;
+}
