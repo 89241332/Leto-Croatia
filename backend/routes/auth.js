@@ -1,0 +1,103 @@
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const pool = require('../db');
+
+const router = express.Router();
+
+//POST method /api/auth/register
+router.post('/register', async (req, res) => {
+    try {
+        const { first_name, 
+                last_name, 
+                email, 
+                password, 
+                role, 
+                phone, 
+                nationality, 
+                date_of_birth, 
+                business_name, 
+                work_location, 
+                description 
+            } = req.body;
+
+        if (!first_name || !last_name || !email || !password || !role) {
+            return res.status(400).json({ error: 'All fields are required' });
+        }
+
+        if (role !== 'employer' && role !== 'employee') {
+            return res.status(400).json({ error: 'Role must be employer or employee' });
+        }
+
+        if (role === 'employee' && (!nationality || !date_of_birth)) {
+            return res.status(400).json({ error: 'Nationality and date of birth are required for employees' });
+        }
+
+        if (role === 'employer' && (!business_name || !work_location)) {
+            return res.status(400).json({ error: 'Business name and work location are required for employers' });
+        }
+
+        const [existing] = await pool.query(
+            'SELECT id FROM user WHERE email = ?',
+            [email]
+        );
+        if (existing.length > 0) {
+            return res.status(409).json({ error: 'Email already registered' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const [result] = await pool.query(
+            'INSERT INTO user (first_name, last_name, email, password, role, phone) VALUES (?, ?, ?, ?, ?, ?)',
+            [first_name, last_name, email, hashedPassword, role, phone || null]
+        );
+
+        const userId = result.insertId;
+
+        if (role === 'employee') {
+            await pool.query(
+                'INSERT INTO employee (nationality, date_of_birth, identity_proof, user_id) VALUES (?, ?, ?, ?)',
+                [nationality, date_of_birth, 'pending', userId]
+            );
+        }
+
+        if (role === 'employer') {
+            await pool.query(
+                'INSERT INTO employer (business_name, work_location, description, proof_document, user_id) VALUES (?, ?, ?, ?, ?)',
+                [business_name, work_location, description || null, 'pending', userId]
+            );
+        }
+
+        req.session.user = {
+            id: userId,
+            first_name,
+            last_name,
+            email,
+            role,
+        };
+
+        res.status(201).json({
+            message: 'Registration successful',
+            userId,
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+//GET method /api/auth/me
+router.get('/me', (req, res) => {
+    if (req.session.user) {
+        res.json({ user: req.session.user });
+    } else {
+        res.status(401).json({ error: 'Not logged in' });
+    }
+});
+
+//POST method /api/auth/logout
+router.post('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.json({ message: 'Logged out' });
+    });
+});
+
+module.exports = router;
