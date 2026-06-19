@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import './css/EmployeeProfile.css';
 
-function EmployeeProfile() {
+function EmployerProfile() {
     const navigate = useNavigate();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phone, setPhone] = useState('');
-    const [nationality, setNationality] = useState('');
-    const [dateOfBirth, setDateOfBirth] = useState('');
+    const [businessName, setBusinessName] = useState('');
+    const [workLocation, setWorkLocation] = useState('');
+    const [description, setDescription] = useState('');
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
@@ -27,16 +27,17 @@ function EmployeeProfile() {
                     return;
                 }
 
-                if (data.role !== 'employee') {
-                    navigate('/employer-profile');
+                if (data.role !== 'employer') {
+                    navigate('/employee-profile');
                     return;
                 }
 
                 setFirstName(data.first_name);
                 setLastName(data.last_name);
                 setPhone(data.phone || '');
-                setNationality(data.nationality);
-                setDateOfBirth(data.date_of_birth ? data.date_of_birth.split('T')[0] : '');
+                setBusinessName(data.business_name);
+                setWorkLocation(data.work_location);
+                setDescription(data.description || '');
             } catch (err) {
                 setError('Failed to load profile.');
             } finally {
@@ -60,8 +61,9 @@ function EmployeeProfile() {
                     first_name: firstName,
                     last_name: lastName,
                     phone,
-                    nationality,
-                    date_of_birth: dateOfBirth,
+                    business_name: businessName,
+                    work_location: workLocation,
+                    description,
                 }),
             });
 
@@ -73,10 +75,10 @@ function EmployeeProfile() {
                 return;
             }
 
-            setSuccess('Profile updated successfully');
+            setSuccess('Profile updated successfully.');
             setSaving(false);
         } catch (err) {
-            setError('Something went wrong. Please try again.');
+            setError('Something went wrong. Please try again.')
             setSaving(false);
         }
     };
@@ -125,22 +127,34 @@ function EmployeeProfile() {
                                 onChange={(e) => setPhone(e.target.value)}
                             />
                         </div>
+                    </div>
+
+                    <div className="profile-section">
+                        <h3 className="profile-section-title">Business Information</h3>
                         <div className="form-group">
-                            <label>Nationality</label>
+                            <label>Business Name</label>
                             <input
                                 className="auth-input"
                                 type="text"
-                                value={nationality}
-                                onChange={(e) => setNationality(e.target.value)}
+                                value={businessName}
+                                onChange={(e) => setBusinessName(e.target.value)}
                             />
                         </div>
                         <div className="form-group">
-                            <label>Date of Birth</label>
+                            <label>Work Location</label>
                             <input
                                 className="auth-input"
-                                type="date"
-                                value={dateOfBirth}
-                                onChange={(e) => setDateOfBirth(e.target.value)}
+                                type="text"
+                                value={workLocation}
+                                onChange={(e) => setWorkLocation(e.target.value)}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Description</label>
+                            <textarea
+                                className="auth-input"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>
                     </div>
@@ -172,4 +186,4 @@ function EmployeeProfile() {
     );
 }
 
-export default EmployeeProfile;
+export default EmployerProfile;
