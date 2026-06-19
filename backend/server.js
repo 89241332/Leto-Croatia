@@ -4,6 +4,7 @@ const session = require('express-session');
 const path = require('path');
 
 const authRoutes = require('./routes/auth');
+const profileRoutes = require('./routes/profile');
 
 const app = express();
 const PORT = process.env.PORT || 30052;
@@ -26,6 +27,7 @@ app.get('/api', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes);
 
 // Deploy - serve React frontend
 const reactBuildPath = path.join(__dirname, './dist');
