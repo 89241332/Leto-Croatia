@@ -5,6 +5,7 @@ import RegisterEmployee from './pages/RegisterEmployee'
 import RegisterEmployer from './pages/RegisterEmployer'
 import Login from './pages/Login'
 import ResetPassword from './pages/ResetPassword'
+import EmployeeProfile from './pages/EmployeeProfile'
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path='/register/employer' element={<RegisterEmployer />} />
           <Route path='/login' element={<Login />} />
           <Route path='/reset-password' element={<ResetPassword />} />
+          <Route path='/profile' element={<EmployeeProfile />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
