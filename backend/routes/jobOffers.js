@@ -40,6 +40,22 @@ router.post('/', async (req, res) => {
         language_requirements
     } = req.body;
 
+    if (!title || !description || !working_hours || !salary || !start_date || !end_date || !work_location || !positions_available) {
+        return res.status(400).json({ error: 'Please fill in all required job details.' });
+    }
+
+    if (!accommodation_type || !location) {
+        return res.status(400).json({ error: 'Please fill in accommodation type and location.' });
+    }
+
+    if (!required_documents || required_documents.length === 0 || required_documents.some(doc => !doc.document_name)) {
+        return res.status(400).json({ error: 'Please add at least one required document with a name.' });
+    }
+
+    if (!language_requirements || language_requirements.length === 0 || language_requirements.some(lang => !lang.language)) {
+        return res.status(400).json({ error: 'Please add at least one language requirement.' });
+    }
+
     try {
         const [jobResult] = await pool.query(
             `INSERT INTO job_offer (title, description, working_hours, salary, start_date, end_date, work_location, positions_available, employer_id)
@@ -198,8 +214,18 @@ router.put('/:id', async (req, res) => {
         status,
         accommodation_type,
         location,
-        additional_info
+        additional_info,
+        required_documents,
+        language_requirements
     } = req.body;
+
+    if (!title || !description || !working_hours || !salary || !start_date || !end_date || !work_location || !positions_available) {
+        return res.status(400).json({ error: 'Please fill in all required job details.' });
+    }
+
+    if (!accommodation_type || !location) {
+        return res.status(400).json({ error: 'Please fill in accommodation type and location.' });
+    }
 
     try {
         const [employers] = await pool.query(
@@ -234,6 +260,29 @@ router.put('/:id', async (req, res) => {
              WHERE job_offer_id = ?`,
             [accommodation_type, location, additional_info || null, job_offer_id]
         );
+
+        await pool.query('DELETE FROM required_document WHERE job_offer_id = ?', [job_offer_id]);
+        await pool.query('DELETE FROM language_requirement WHERE job_offer_id = ?', [job_offer_id]);
+
+        if (required_documents && required_documents.length > 0) {
+            for (const doc of required_documents) {
+                await pool.query(
+                    `INSERT INTO required_document (document_name, description, job_offer_id)
+                    VALUES (?, ?, ?)`,
+                    [doc.document_name, doc.description || null, job_offer_id]
+                );
+            }
+        }
+
+        if (language_requirements && language_requirements.length > 0) {
+            for (const lang of language_requirements) {
+                await pool.query(
+                    `INSERT INTO language_requirement (language, job_offer_id)
+                    VALUES (?, ?)`,
+                    [lang.language, job_offer_id]
+                );
+            }
+        }
 
         return res.status(200).json({ message: 'Job offer updated successfully.' });
 

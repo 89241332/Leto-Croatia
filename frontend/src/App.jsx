@@ -8,6 +8,7 @@ import ResetPassword from './pages/ResetPassword'
 import EmployeeProfile from './pages/EmployeeProfile'
 import EmployerProfile from './pages/EmployerProfile'
 import MyJobOffers from './pages/MyJobOffers'
+import CreateEditJobOffer from './pages/CreateEditJobOffer'
 
 export default function App() {
   return (
@@ -22,6 +23,8 @@ export default function App() {
           <Route path='/employee-profile' element={<EmployeeProfile />} />
           <Route path='/employer-profile' element={<EmployerProfile />} />
           <Route path='/job-offers' element={<MyJobOffers />} />
+          <Route path='/job-offers/create' element={<CreateEditJobOffer />} />
+          <Route path='/job-offers/:id/edit' element={<CreateEditJobOffer />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
