@@ -34,8 +34,8 @@ router.post('/', async (req, res) => {
         work_location,
         positions_available,
         accommodation_type,
-        accommodation_location,
-        accommodation_additional_info,
+        location,
+        additional_info,
         required_documents,
         language_requirements
     } = req.body;
@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
         await pool.query(
             `INSERT INTO accommodation (accommodation_type, location, additional_info, job_offer_id)
              VALUES (?, ?, ?, ?)`,
-            [accommodation_type, accommodation_location, accommodation_additional_info || null, job_offer_id]
+            [accommodation_type, location, additional_info || null, job_offer_id]
         );
 
         if (required_documents && required_documents.length > 0) {
@@ -76,6 +76,166 @@ router.post('/', async (req, res) => {
         }
 
         return res.status(201).json({ message: 'Job offer created successfully.', job_offer_id });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Something went wrong.' });
+    }
+});
+
+// GET /api/job-offers/my - get employer's own job offers
+router.get('/my', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'Not logged in.' });
+    }
+
+    if (req.session.user.role !== 'employer') {
+        return res.status(403).json({ error: 'Only employers can access this.' });
+    }
+
+    try {
+        const [employers] = await pool.query(
+            'SELECT id FROM employer WHERE user_id = ?',
+            [req.session.user.id]
+        );
+
+        if (employers.length === 0) {
+            return res.status(404).json({ error: 'Employer profile not found.' });
+        }
+
+        const employer_id = employers[0].id;
+
+        const [jobOffers] = await pool.query(
+            `SELECT j.*, 
+                    a.accommodation_type, a.location AS accommodation_location, a.additional_info,
+                    GROUP_CONCAT(DISTINCT rd.document_name SEPARATOR ', ') AS required_documents,
+                    GROUP_CONCAT(DISTINCT lr.language SEPARATOR ', ') AS languages
+             FROM job_offer j
+             LEFT JOIN accommodation a ON a.job_offer_id = j.id
+             LEFT JOIN required_document rd ON rd.job_offer_id = j.id
+             LEFT JOIN language_requirement lr ON lr.job_offer_id = j.id
+             WHERE j.employer_id = ?
+             GROUP BY j.id, a.accommodation_type, a.location, a.additional_info`,
+            [employer_id]
+        );
+
+        return res.status(200).json(jobOffers);
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Something went wrong.' });
+    }
+});
+
+// DELETE /api/job-offers/:id - delete a job offer
+router.delete('/:id', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'Not logged in.' });
+    }
+
+    if (req.session.user.role !== 'employer') {
+        return res.status(403).json({ error: 'Only employers can delete job offers.' });
+    }
+
+    const job_offer_id = req.params.id;
+
+    try {
+        const [employers] = await pool.query(
+            'SELECT id FROM employer WHERE user_id = ?',
+            [req.session.user.id]
+        );
+
+        if (employers.length === 0) {
+            return res.status(404).json({ error: 'Employer profile not found.' });
+        }
+
+        const employer_id = employers[0].id;
+
+        const [jobOffers] = await pool.query(
+            'SELECT id FROM job_offer WHERE id = ? AND employer_id = ?',
+            [job_offer_id, employer_id]
+        );
+
+        if (jobOffers.length === 0) {
+            return res.status(404).json({ error: 'Job offer not found or you do not own it.' });
+        }
+
+        await pool.query('DELETE FROM accommodation WHERE job_offer_id = ?', [job_offer_id]);
+        await pool.query('DELETE FROM required_document WHERE job_offer_id = ?', [job_offer_id]);
+        await pool.query('DELETE FROM language_requirement WHERE job_offer_id = ?', [job_offer_id]);
+        await pool.query('DELETE FROM job_offer_image WHERE job_offer_id = ?', [job_offer_id]);
+        await pool.query('DELETE FROM job_offer WHERE id = ?', [job_offer_id]);
+
+        return res.status(200).json({ message: 'Job offer deleted successfully.' });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Something went wrong.' });
+    }
+});
+
+// PUT /api/job-offers/:id - edit a job offer
+router.put('/:id', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'Not logged in.' });
+    }
+
+    if (req.session.user.role !== 'employer') {
+        return res.status(403).json({ error: 'Only employers can edit job offers.' });
+    }
+
+    const job_offer_id = req.params.id;
+
+    const {
+        title,
+        description,
+        working_hours,
+        salary,
+        start_date,
+        end_date,
+        work_location,
+        positions_available,
+        status,
+        accommodation_type,
+        location,
+        additional_info
+    } = req.body;
+
+    try {
+        const [employers] = await pool.query(
+            'SELECT id FROM employer WHERE user_id = ?',
+            [req.session.user.id]
+        );
+
+        if (employers.length === 0) {
+            return res.status(404).json({ error: 'Employer profile not found.' });
+        }
+
+        const employer_id = employers[0].id;
+
+        const [jobOffers] = await pool.query(
+            'SELECT id FROM job_offer WHERE id = ? AND employer_id = ?',
+            [job_offer_id, employer_id]
+        );
+
+        if (jobOffers.length === 0) {
+            return res.status(404).json({ error: 'Job offer not found or you do not own it.' });
+        }
+
+        await pool.query(
+            `UPDATE job_offer SET title = ?, description = ?, working_hours = ?, salary = ?,
+             start_date = ?, end_date = ?, work_location = ?, positions_available = ?, status = ?
+             WHERE id = ?`,
+            [title, description, working_hours, salary, start_date, end_date, work_location, positions_available, status, job_offer_id]
+        );
+
+        await pool.query(
+            `UPDATE accommodation SET accommodation_type = ?, location = ?, additional_info = ?
+             WHERE job_offer_id = ?`,
+            [accommodation_type, location, additional_info || null, job_offer_id]
+        );
+
+        return res.status(200).json({ message: 'Job offer updated successfully.' });
 
     } catch (err) {
         console.error(err);
