@@ -21,6 +21,7 @@ function CreateEditJobOffer() {
     const [additionalInfo, setAdditionalInfo] = useState('');
     const [requiredDocuments, setRequiredDocuments] = useState([{ document_name: '', description: '' }]);
     const [languageRequirements, setLanguageRequirements] = useState([{ language: '' }]);
+    const [image, setImage] = useState(null);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
 
@@ -69,29 +70,31 @@ function CreateEditJobOffer() {
         setSaving(true);
         
         try {
-            const url = isEditing ? `/api/job-offers/${id}` : '/api/job-offers';
-            const method = isEditing ? 'PUT' : 'POST';
+            const formData = new FormData()
+            formData.append('title', title)
+            formData.append('description', description)
+            formData.append('working_hours', workingHours)
+            formData.append('salary', salary)
+            formData.append('start_date', startDate)
+            formData.append('end_date', endDate)
+            formData.append('work_location', workLocation)
+            formData.append('positions_available', positionsAvailable)
+            formData.append('status', status)
+            formData.append('accommodation_type', accommodationType)
+            formData.append('location', location)
+            formData.append('additional_info', additionalInfo)
+            formData.append('required_documents', JSON.stringify(requiredDocuments))
+            formData.append('language_requirements', JSON.stringify(languageRequirements))
+            if (image) formData.append('image', image)
+
+            const url = isEditing ? `/api/job-offers/${id}` : '/api/job-offers'
+            const method = isEditing ? 'PUT' : 'POST'
             const res = await fetch(url, {
                 method,
-                headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify({
-                    title,
-                    description,
-                    working_hours: workingHours,
-                    salary,
-                    start_date: startDate,
-                    end_date: endDate,
-                    work_location: workLocation,
-                    positions_available: positionsAvailable,
-                    status,
-                    accommodation_type: accommodationType,
-                    location,
-                    additional_info: additionalInfo,
-                    required_documents: requiredDocuments,
-                    language_requirements: languageRequirements
-                })
+                body: formData
             });
+            
             const data = await res.json();
             if (!res.ok) return setError(data.error || 'Something went wrong.');
             navigate('/job-offers');
@@ -246,6 +249,13 @@ function CreateEditJobOffer() {
                         ))}
 
                         <button className="add-btn" onClick={() => setLanguageRequirements([...languageRequirements, { language: '' }])}>+ Add Language</button>
+                    </div>
+
+                    <div className="form-row-full">
+                        <div className="form-group">
+                            <label>Job Offer Image</label>
+                            <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+                        </div>
                     </div>
 
                     <div className="register-form-footer">

@@ -10,6 +10,7 @@ export default function RegisterEmployee() {
     const [phone, setPhone] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [identityProof, setIdentityProof] = useState(null)
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
@@ -25,20 +26,21 @@ export default function RegisterEmployee() {
         setLoading(true)
 
         try {
+            const formData = new FormData()
+            formData.append('first_name', firstName)
+            formData.append('last_name', lastName)
+            formData.append('nationality', nationality)
+            formData.append('date_of_birth', dateOfBirth)
+            formData.append('email', email)
+            formData.append('phone', phone)
+            formData.append('password', password)
+            formData.append('role', 'employee')
+            if (identityProof) formData.append('identity_proof', identityProof)
+
             const response = await fetch('/api/auth/register', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify({
-                    first_name: firstName,
-                    last_name: lastName,
-                    nationality,
-                    date_of_birth: dateOfBirth,
-                    email,
-                    phone,
-                    password,
-                    role: 'employee'
-                })
+                body: formData
             })
 
             const data = await response.json()
@@ -113,6 +115,13 @@ export default function RegisterEmployee() {
                             <div className='form-group'>
                                 <label>Confirm Password</label>
                                 <input type='password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                            </div>
+                        </div>
+
+                        <div className='form-row-full'>
+                            <div className='form-group'>
+                                <label>Identity Proof Document</label>
+                                <input type='file' onChange={(e) => setIdentityProof(e.target.files[0])} />
                             </div>
                         </div>
 
