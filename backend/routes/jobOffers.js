@@ -1,10 +1,11 @@
 const express = require('express');
 const pool = require('../db');
+const upload = require('../upload');
 
 const router = express.Router();
 
 // POST /api/job-offers - create a job offer
-router.post('/', async (req, res) => {
+router.post('/', upload.single('image'), async (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ error: 'Not logged in.' });
     }
@@ -56,6 +57,10 @@ router.post('/', async (req, res) => {
         return res.status(400).json({ error: 'Please add at least one language requirement.' });
     }
 
+    if (!req.file) {
+        return res.status(400).json({ error: 'Please upload an image for the job offer.' });
+    }
+
     try {
         const [jobResult] = await pool.query(
             `INSERT INTO job_offer (title, description, working_hours, salary, start_date, end_date, work_location, positions_available, employer_id)
@@ -90,6 +95,11 @@ router.post('/', async (req, res) => {
                 );
             }
         }
+
+        await pool.query(
+            'INSERT INTO job_offer_image (file, job_offer_id) VALUES (?, ?)',
+            ['uploads/' + req.file.filename, job_offer_id]
+        );
 
         return res.status(201).json({ message: 'Job offer created successfully.', job_offer_id });
 
@@ -250,7 +260,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // PUT /api/job-offers/:id - edit a job offer
-router.put('/:id', async (req, res) => {
+router.put('/:id', upload.single('image'), async (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ error: 'Not logged in.' });
     }
@@ -341,6 +351,17 @@ router.put('/:id', async (req, res) => {
                     [lang.language, job_offer_id]
                 );
             }
+        }
+
+        if (req.file) {
+            await pool.query(
+                'DELETE FROM job_offer_image WHERE job_offer_id = ?',
+                [job_offer_id]
+            );
+            await pool.query(
+                'INSERT INTO job_offer_image (file, job_offer_id) VALUES (?, ?)',
+                ['uploads/' + req.file.filename, job_offer_id]
+            );
         }
 
         return res.status(200).json({ message: 'Job offer updated successfully.' });
