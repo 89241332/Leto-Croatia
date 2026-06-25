@@ -475,3 +475,18 @@ a:hover {
     color: #6b7280;
     text-align: center;
 }
+
+.form-group input[type='file'] {
+    padding: 8px 12px;
+    border: 1px dashed #e5e7eb;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.form-group input[type='file']:hover {
+    border-color: #50D9FE;
+    background-color: #E0F7FA;
+}

@@ -1,10 +1,11 @@
 const express = require('express');
 const pool = require('../db');
+const upload = require('../upload');
 
 const router = express.Router();
 
 // POST /api/job-offers - create a job offer
-router.post('/', async (req, res) => {
+router.post('/', upload.single('image'), async (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ error: 'Not logged in.' });
     }
@@ -40,6 +41,14 @@ router.post('/', async (req, res) => {
         language_requirements
     } = req.body;
 
+    const parsedDocuments = typeof required_documents === 'string'
+        ? JSON.parse(required_documents)
+        : required_documents;
+
+    const parsedLanguages = typeof language_requirements === 'string'
+        ? JSON.parse(language_requirements)
+        : language_requirements;
+
     if (!title || !description || !working_hours || !salary || !start_date || !end_date || !work_location || !positions_available) {
         return res.status(400).json({ error: 'Please fill in all required job details.' });
     }
@@ -48,12 +57,16 @@ router.post('/', async (req, res) => {
         return res.status(400).json({ error: 'Please fill in accommodation type and location.' });
     }
 
-    if (!required_documents || required_documents.length === 0 || required_documents.some(doc => !doc.document_name)) {
+    if (!parsedDocuments || parsedDocuments.length === 0 || parsedDocuments.some(doc => !doc.document_name)) {
         return res.status(400).json({ error: 'Please add at least one required document with a name.' });
     }
 
-    if (!language_requirements || language_requirements.length === 0 || language_requirements.some(lang => !lang.language)) {
+    if (!parsedLanguages || parsedLanguages.length === 0 || parsedLanguages.some(lang => !lang.language)) {
         return res.status(400).json({ error: 'Please add at least one language requirement.' });
+    }
+
+    if (!req.file) {
+        return res.status(400).json({ error: 'Please upload an image for the job offer.' });
     }
 
     try {
@@ -71,8 +84,8 @@ router.post('/', async (req, res) => {
             [accommodation_type, location, additional_info || null, job_offer_id]
         );
 
-        if (required_documents && required_documents.length > 0) {
-            for (const doc of required_documents) {
+        if (parsedDocuments && parsedDocuments.length > 0) {
+            for (const doc of parsedDocuments) {
                 await pool.query(
                     `INSERT INTO required_document (document_name, description, job_offer_id)
                      VALUES (?, ?, ?)`,
@@ -81,8 +94,8 @@ router.post('/', async (req, res) => {
             }
         }
 
-        if (language_requirements && language_requirements.length > 0) {
-            for (const lang of language_requirements) {
+        if (parsedLanguages && parsedLanguages.length > 0) {
+            for (const lang of parsedLanguages) {
                 await pool.query(
                     `INSERT INTO language_requirement (language, job_offer_id)
                      VALUES (?, ?)`,
@@ -90,6 +103,11 @@ router.post('/', async (req, res) => {
                 );
             }
         }
+
+        await pool.query(
+            'INSERT INTO job_offer_image (file, job_offer_id) VALUES (?, ?)',
+            ['uploads/' + req.file.filename, job_offer_id]
+        );
 
         return res.status(201).json({ message: 'Job offer created successfully.', job_offer_id });
 
@@ -250,7 +268,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // PUT /api/job-offers/:id - edit a job offer
-router.put('/:id', async (req, res) => {
+router.put('/:id', upload.single('image'), async (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ error: 'Not logged in.' });
     }
@@ -277,6 +295,14 @@ router.put('/:id', async (req, res) => {
         required_documents,
         language_requirements
     } = req.body;
+
+    const parsedDocuments = typeof required_documents === 'string'
+        ? JSON.parse(required_documents)
+        : required_documents;
+
+    const parsedLanguages = typeof language_requirements === 'string'
+        ? JSON.parse(language_requirements)
+        : language_requirements;
 
     if (!title || !description || !working_hours || !salary || !start_date || !end_date || !work_location || !positions_available) {
         return res.status(400).json({ error: 'Please fill in all required job details.' });
@@ -323,8 +349,8 @@ router.put('/:id', async (req, res) => {
         await pool.query('DELETE FROM required_document WHERE job_offer_id = ?', [job_offer_id]);
         await pool.query('DELETE FROM language_requirement WHERE job_offer_id = ?', [job_offer_id]);
 
-        if (required_documents && required_documents.length > 0) {
-            for (const doc of required_documents) {
+        if (parsedDocuments && parsedDocuments.length > 0) {
+            for (const doc of parsedDocuments) {
                 await pool.query(
                     `INSERT INTO required_document (document_name, description, job_offer_id)
                     VALUES (?, ?, ?)`,
@@ -333,14 +359,25 @@ router.put('/:id', async (req, res) => {
             }
         }
 
-        if (language_requirements && language_requirements.length > 0) {
-            for (const lang of language_requirements) {
+        if (parsedLanguages && parsedLanguages.length > 0) {
+            for (const lang of parsedLanguages) {
                 await pool.query(
                     `INSERT INTO language_requirement (language, job_offer_id)
                     VALUES (?, ?)`,
                     [lang.language, job_offer_id]
                 );
             }
+        }
+
+        if (req.file) {
+            await pool.query(
+                'DELETE FROM job_offer_image WHERE job_offer_id = ?',
+                [job_offer_id]
+            );
+            await pool.query(
+                'INSERT INTO job_offer_image (file, job_offer_id) VALUES (?, ?)',
+                ['uploads/' + req.file.filename, job_offer_id]
+            );
         }
 
         return res.status(200).json({ message: 'Job offer updated successfully.' });

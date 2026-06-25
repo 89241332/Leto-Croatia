@@ -1,11 +1,15 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const pool = require('../db');
+const upload = require('../upload');
 
 const router = express.Router();
 
 //POST method /api/auth/register
-router.post('/register', async (req, res) => {
+router.post('/register', upload.fields([
+    {name: 'identity_proof', maxCount: 1},
+    {name: 'proof_document', maxCount: 1}
+]), async (req, res) => {
     try {
         const { first_name, 
                 last_name, 
@@ -36,6 +40,14 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ error: 'Business name and work location are required for employers' });
         }
 
+        if (role === 'employee' && !req.files?.identity_proof?.[0]) {
+            return res.status(400).json({ error: 'Identity proof document is required for employees.' });
+        }
+
+        if (role === 'employer' && !req.files?.proof_document?.[0]) {
+            return res.status(400).json({ error: 'Proof document is required for employers.' });
+        }
+
         const [existing] = await pool.query(
             'SELECT id FROM user WHERE email = ?',
             [email]
@@ -56,14 +68,22 @@ router.post('/register', async (req, res) => {
         if (role === 'employee') {
             await pool.query(
                 'INSERT INTO employee (nationality, date_of_birth, identity_proof, user_id) VALUES (?, ?, ?, ?)',
-                [nationality, date_of_birth, 'pending', userId]
+                [nationality, 
+                 date_of_birth,
+                 'uploads/' + req.files.identity_proof[0].filename,
+                 userId
+                ]
             );
         }
 
         if (role === 'employer') {
             await pool.query(
                 'INSERT INTO employer (business_name, work_location, description, proof_document, user_id) VALUES (?, ?, ?, ?, ?)',
-                [business_name, work_location, description || null, 'pending', userId]
+                [business_name,
+                 work_location,
+                 description || null,
+                 'uploads/' + req.files.proof_document[0].filename,
+                 userId]
             );
         }
 

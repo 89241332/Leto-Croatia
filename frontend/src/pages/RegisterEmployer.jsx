@@ -11,6 +11,7 @@ export default function RegisterEmployer() {
     const [businessName, setBusinessName] = useState('')
     const [workLocation, setWorkLocation] = useState('')
     const [description, setDescription] = useState('')
+    const [proofDocument, setProofDocument] = useState(null)
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
@@ -26,21 +27,22 @@ export default function RegisterEmployer() {
         setLoading(true)
 
         try {
+            const formData = new FormData()
+            formData.append('first_name', firstName)
+            formData.append('last_name', lastName)
+            formData.append('email', email)
+            formData.append('phone', phone)
+            formData.append('password', password)
+            formData.append('role', 'employer')
+            formData.append('business_name', businessName)
+            formData.append('work_location', workLocation)
+            formData.append('description', description)
+            if (proofDocument) formData.append('proof_document', proofDocument)
+
             const response = await fetch('/api/auth/register', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify({
-                    first_name: firstName,
-                    last_name: lastName,
-                    email,
-                    phone,
-                    password,
-                    role: 'employer',
-                    business_name: businessName,
-                    work_location: workLocation,
-                    description
-                })
+                body: formData
             })
 
             const data = await response.json()
@@ -133,6 +135,13 @@ export default function RegisterEmployer() {
                             <div className='form-group'>
                                 <label>Business Description</label>
                                 <textarea placeholder='Tell potential employees about your company...' value={description} onChange={(e) => setDescription(e.target.value)} />
+                            </div>
+                        </div>
+
+                        <div className='form-row-full'>
+                            <div className='form-group'>
+                                <label>Proof Document</label>
+                                <input type='file' onChange={(e) => setProofDocument(e.target.files[0])} />
                             </div>
                         </div>
 

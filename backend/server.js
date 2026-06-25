@@ -13,6 +13,8 @@ const PORT = process.env.PORT || 30052;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use('/uploads', express.static('uploads'));
+
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
