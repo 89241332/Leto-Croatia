@@ -41,6 +41,14 @@ router.post('/', upload.single('image'), async (req, res) => {
         language_requirements
     } = req.body;
 
+    const parsedDocuments = typeof required_documents === 'string'
+        ? JSON.parse(required_documents)
+        : required_documents;
+
+    const parsedLanguages = typeof language_requirements === 'string'
+        ? JSON.parse(language_requirements)
+        : language_requirements;
+
     if (!title || !description || !working_hours || !salary || !start_date || !end_date || !work_location || !positions_available) {
         return res.status(400).json({ error: 'Please fill in all required job details.' });
     }
@@ -49,11 +57,11 @@ router.post('/', upload.single('image'), async (req, res) => {
         return res.status(400).json({ error: 'Please fill in accommodation type and location.' });
     }
 
-    if (!required_documents || required_documents.length === 0 || required_documents.some(doc => !doc.document_name)) {
+    if (!parsedDocuments || parsedDocuments.length === 0 || parsedDocuments.some(doc => !doc.document_name)) {
         return res.status(400).json({ error: 'Please add at least one required document with a name.' });
     }
 
-    if (!language_requirements || language_requirements.length === 0 || language_requirements.some(lang => !lang.language)) {
+    if (!parsedLanguages || parsedLanguages.length === 0 || parsedLanguages.some(lang => !lang.language)) {
         return res.status(400).json({ error: 'Please add at least one language requirement.' });
     }
 
@@ -76,8 +84,8 @@ router.post('/', upload.single('image'), async (req, res) => {
             [accommodation_type, location, additional_info || null, job_offer_id]
         );
 
-        if (required_documents && required_documents.length > 0) {
-            for (const doc of required_documents) {
+        if (parsedDocuments && parsedDocuments.length > 0) {
+            for (const doc of parsedDocuments) {
                 await pool.query(
                     `INSERT INTO required_document (document_name, description, job_offer_id)
                      VALUES (?, ?, ?)`,
@@ -86,8 +94,8 @@ router.post('/', upload.single('image'), async (req, res) => {
             }
         }
 
-        if (language_requirements && language_requirements.length > 0) {
-            for (const lang of language_requirements) {
+        if (parsedLanguages && parsedLanguages.length > 0) {
+            for (const lang of parsedLanguages) {
                 await pool.query(
                     `INSERT INTO language_requirement (language, job_offer_id)
                      VALUES (?, ?)`,
@@ -288,6 +296,14 @@ router.put('/:id', upload.single('image'), async (req, res) => {
         language_requirements
     } = req.body;
 
+    const parsedDocuments = typeof required_documents === 'string'
+        ? JSON.parse(required_documents)
+        : required_documents;
+
+    const parsedLanguages = typeof language_requirements === 'string'
+        ? JSON.parse(language_requirements)
+        : language_requirements;
+
     if (!title || !description || !working_hours || !salary || !start_date || !end_date || !work_location || !positions_available) {
         return res.status(400).json({ error: 'Please fill in all required job details.' });
     }
@@ -333,8 +349,8 @@ router.put('/:id', upload.single('image'), async (req, res) => {
         await pool.query('DELETE FROM required_document WHERE job_offer_id = ?', [job_offer_id]);
         await pool.query('DELETE FROM language_requirement WHERE job_offer_id = ?', [job_offer_id]);
 
-        if (required_documents && required_documents.length > 0) {
-            for (const doc of required_documents) {
+        if (parsedDocuments && parsedDocuments.length > 0) {
+            for (const doc of parsedDocuments) {
                 await pool.query(
                     `INSERT INTO required_document (document_name, description, job_offer_id)
                     VALUES (?, ?, ?)`,
@@ -343,8 +359,8 @@ router.put('/:id', upload.single('image'), async (req, res) => {
             }
         }
 
-        if (language_requirements && language_requirements.length > 0) {
-            for (const lang of language_requirements) {
+        if (parsedLanguages && parsedLanguages.length > 0) {
+            for (const lang of parsedLanguages) {
                 await pool.query(
                     `INSERT INTO language_requirement (language, job_offer_id)
                     VALUES (?, ?)`,
