@@ -1,0 +1,103 @@
+.my-job-offers-page {
+    flex: 1;
+    padding: 40px 60px;
+}
+
+.my-job-offers-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.my-job-offers-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #001D32;
+}
+
+.create-offer-btn {
+    background-color: #50D9FE;
+    color: #001D32;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.create-offer-btn:hover {
+    background-color: #00677D;
+    color: white;
+}
+
+.job-offers-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.job-offers-table th {
+    text-align: left;
+    padding: 14px 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #6b7280;
+    background-color: #f9fafb;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.job-offers-table td {
+    padding: 16px 20px;
+    border-top: 1px solid #e5e7eb;
+    font-size: 0.95rem;
+    color: #001D32;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-open {
+    background-color: #E0F7FA;
+    color: #00677D;
+}
+
+.status-closed {
+    background-color: #e5e7eb;
+    color: #6b7280;
+}
+
+.table-action-btn {
+    background: none;
+    border: none;
+    color: #50D9FE;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 0;
+}
+
+.table-action-btn:hover {
+    color: #00677D;
+}
+
+.no-offers-msg {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6b7280;
+    font-size: 1rem;
+}
+
+.navbar-actions {
+    margin-left: auto;
+}
