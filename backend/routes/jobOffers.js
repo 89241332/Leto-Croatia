@@ -143,6 +143,65 @@ router.get('/my', async (req, res) => {
     }
 });
 
+// GET /api/job-offers/:id - get a single job offer
+router.get('/:id', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'Not logged in.' });
+    }
+
+    if (req.session.user.role !== 'employer') {
+        return res.status(403).json({ error: 'Only employers can access this.' });
+    }
+
+    const job_offer_id = req.params.id;
+
+    try {
+        const [employers] = await pool.query(
+            'SELECT id FROM employer WHERE user_id = ?',
+            [req.session.user.id]
+        );
+
+        if (employers.length === 0) {
+            return res.status(404).json({ error: 'Employer profile not found.' });
+        }
+
+        const employer_id = employers[0].id;
+
+        const [jobOffers] = await pool.query(
+            `SELECT j.*,
+                    a.accommodation_type, a.location AS accommodation_location, a.additional_info
+             FROM job_offer j
+             LEFT JOIN accommodation a ON a.job_offer_id = j.id
+             WHERE j.id = ? AND j.employer_id = ?`,
+            [job_offer_id, employer_id]
+        );
+
+        if (jobOffers.length === 0) {
+            return res.status(404).json({ error: 'Job offer not found or you do not own it.' });
+        }
+
+        const [requiredDocuments] = await pool.query(
+            'SELECT id, document_name, description FROM required_document WHERE job_offer_id = ?',
+            [job_offer_id]
+        );
+
+        const [languageRequirements] = await pool.query(
+            'SELECT id, language FROM language_requirement WHERE job_offer_id = ?',
+            [job_offer_id]
+        );
+
+        const jobOffer = jobOffers[0];
+        jobOffer.required_documents = requiredDocuments;
+        jobOffer.language_requirements = languageRequirements;
+
+        return res.status(200).json(jobOffer);
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Something went wrong.' });
+    }
+});
+
 // DELETE /api/job-offers/:id - delete a job offer
 router.delete('/:id', async (req, res) => {
     if (!req.session.user) {
