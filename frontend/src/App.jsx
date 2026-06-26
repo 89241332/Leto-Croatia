@@ -10,6 +10,9 @@ import EmployerProfile from './pages/EmployerProfile'
 import MyJobOffers from './pages/MyJobOffers'
 import CreateEditJobOffer from './pages/CreateEditJobOffer'
 import JobOfferDetail from './pages/JobOfferDetail'
+import JobOffers from './pages/JobOffers'
+import SearchResults from './pages/SearchResults'
+import JobOfferDetailEmployee from './pages/JobOfferDetailEmployee'
 
 export default function App() {
   return (
@@ -27,6 +30,9 @@ export default function App() {
           <Route path='/job-offers/create' element={<CreateEditJobOffer />} />
           <Route path='/job-offers/:id/edit' element={<CreateEditJobOffer />} />
           <Route path='/job-offers/:id' element={<JobOfferDetail />} />
+          <Route path="/browse" element={<JobOffers />} />
+          <Route path="/browse/search" element={<SearchResults />} />
+          <Route path="/browse/:id" element={<JobOfferDetailEmployee />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

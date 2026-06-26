@@ -1,0 +1,166 @@
+.job-offers-page {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.job-offers-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #001D32;
+    margin-bottom: 24px;
+}
+
+.job-offers-search-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.job-offers-search-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.job-offers-search-btn {
+    padding: 10px 20px;
+    background-color: #50D9FE;
+    color: #001D32;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.job-offers-search-btn:hover {
+    background-color: #00677D;
+    color: #fff;
+}
+
+.job-offers-filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+    padding: 16px;
+    background-color: #E0F7FA;
+    border-radius: 8px;
+}
+
+.job-offers-filter-input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    min-width: 140px;
+}
+
+.job-offers-filter-btn {
+    padding: 8px 18px;
+    background-color: #001D32;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.job-offers-filter-btn:hover {
+    background-color: #070A61;
+}
+
+.job-offers-status {
+    text-align: center;
+    font-size: 15px;
+    color: #555;
+    margin-top: 40px;
+}
+
+.error-text {
+    color: red;
+}
+
+.job-offers-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.job-offer-card {
+    background-color: #fff;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.job-offer-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #001D32;
+}
+
+.job-offer-card-employer {
+    font-size: 14px;
+    color: #00677D;
+    font-weight: 600;
+}
+
+.job-offer-card-location {
+    font-size: 14px;
+    color: #555;
+}
+
+.job-offer-card-salary {
+    font-size: 15px;
+    font-weight: 600;
+    color: #070A61;
+}
+
+.job-offer-card-period {
+    font-size: 13px;
+    color: #777;
+}
+
+.job-offer-card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.job-offer-card-btn-view {
+    flex: 1;
+    padding: 8px;
+    background-color: #fff;
+    color: #001D32;
+    border: 1px solid #001D32;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.job-offer-card-btn-view:hover {
+    background-color: #001D32;
+    color: #fff;
+}
+
+.job-offer-card-btn-apply {
+    flex: 1;
+    padding: 8px;
+    background-color: #50D9FE;
+    color: #001D32;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.job-offer-card-btn-apply:hover {
+    background-color: #00677D;
+    color: #fff;
+}
