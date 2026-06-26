@@ -2,6 +2,7 @@ const express = require('express');
 const pool = require('../db');
 const router = express.Router();
 
+// GET /api/browse - browse job offers
 router.get('/', async (req, res) => {
     const { location, language, salary_min, salary_max, start_date, end_date } = req.query;
 
@@ -71,6 +72,7 @@ router.get('/', async (req, res) => {
     }
 });
 
+// GET /api/browse/search - search job offers
 router.get('/search', async (req, res) => {
     const q = (req.query.q || '').trim();
 
@@ -107,6 +109,47 @@ router.get('/search', async (req, res) => {
 
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+});
+
+// GET /api/browse/:id - get job offer by id
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const [jobOffers] = await pool.query(
+            `SELECT j.*,
+                    e.business_name,
+                    a.accommodation_type, a.location AS accommodation_location, a.additional_info
+             FROM job_offer j
+             JOIN employer e ON j.employer_id = e.id
+             LEFT JOIN accommodation a ON a.job_offer_id = j.id
+             WHERE j.id = ? AND j.status = 'open'`,
+            [id]
+        );
+
+        if (jobOffers.length === 0) {
+            return res.status(404).json({ error: 'Job offer not found.' });
+        }
+
+        const [requiredDocuments] = await pool.query(
+            'SELECT id, document_name, description FROM required_document WHERE job_offer_id = ?',
+            [id]
+        );
+
+        const [languageRequirements] = await pool.query(
+            'SELECT id, language FROM language_requirement WHERE job_offer_id = ?',
+            [id]
+        );
+
+        const jobOffer = jobOffers[0];
+        jobOffer.required_documents = requiredDocuments;
+        jobOffer.language_requirements = languageRequirements;
+
+        return res.status(200).json(jobOffer);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Something went wrong.' });
     }
 });
 
