@@ -1,0 +1,151 @@
+.create-edit-page {
+    flex: 1;
+    padding: 40px 60px;
+}
+
+.create-edit-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #001D32;
+    margin-bottom: 32px;
+}
+
+.form-section {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 24px;
+}
+
+.form-section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #001D32;
+    border-left: 4px solid #50D9FE;
+    padding-left: 12px;
+    margin-bottom: 24px;
+}
+
+.form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.form-full {
+    margin-bottom: 16px;
+}
+
+.dynamic-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.dynamic-item-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-right: 16px;
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    color: #ef4444;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.remove-btn:hover {
+    color: #b91c1c;
+}
+
+.add-btn {
+    background: none;
+    border: 1px dashed #50D9FE;
+    border-radius: 8px;
+    color: #50D9FE;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.add-btn:hover {
+    background-color: #E0F7FA;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.cancel-btn {
+    background-color: white;
+    color: #001D32;
+    border: 1px solid #001D32;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.cancel-btn:hover {
+    background-color: #001D32;
+    color: white;
+}
+
+.submit-btn {
+    background-color: #50D9FE;
+    color: #001D32;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background-color: #00677D;
+    color: white;
+}
+
+.submit-btn:disabled {
+    background-color: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.form-group input[type='file'] {
+    padding: 8px 12px;
+    border: 1px dashed #e5e7eb;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.form-group input[type='file']:hover {
+    border-color: #50D9FE;
+    background-color: #E0F7FA;
+}

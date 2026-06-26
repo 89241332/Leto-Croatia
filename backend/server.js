@@ -4,12 +4,16 @@ const session = require('express-session');
 const path = require('path');
 
 const authRoutes = require('./routes/auth');
+const profileRoutes = require('./routes/profile');
+const jobOffersRouter = require('./routes/jobOffers');
 
 const app = express();
 const PORT = process.env.PORT || 30052;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use('/uploads', express.static('uploads'));
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -26,6 +30,8 @@ app.get('/api', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/job-offers', jobOffersRouter);
 
 // Deploy - serve React frontend
 const reactBuildPath = path.join(__dirname, './dist');

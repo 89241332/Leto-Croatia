@@ -5,6 +5,11 @@ import RegisterEmployee from './pages/RegisterEmployee'
 import RegisterEmployer from './pages/RegisterEmployer'
 import Login from './pages/Login'
 import ResetPassword from './pages/ResetPassword'
+import EmployeeProfile from './pages/EmployeeProfile'
+import EmployerProfile from './pages/EmployerProfile'
+import MyJobOffers from './pages/MyJobOffers'
+import CreateEditJobOffer from './pages/CreateEditJobOffer'
+import JobOfferDetail from './pages/JobOfferDetail'
 
 export default function App() {
   return (
@@ -16,6 +21,12 @@ export default function App() {
           <Route path='/register/employer' element={<RegisterEmployer />} />
           <Route path='/login' element={<Login />} />
           <Route path='/reset-password' element={<ResetPassword />} />
+          <Route path='/employee-profile' element={<EmployeeProfile />} />
+          <Route path='/employer-profile' element={<EmployerProfile />} />
+          <Route path='/job-offers' element={<MyJobOffers />} />
+          <Route path='/job-offers/create' element={<CreateEditJobOffer />} />
+          <Route path='/job-offers/:id/edit' element={<CreateEditJobOffer />} />
+          <Route path='/job-offers/:id' element={<JobOfferDetail />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
