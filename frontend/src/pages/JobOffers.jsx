@@ -75,91 +75,114 @@ function JobOffers() {
     if (error) return <p className="job-offers-status error-text">{error}</p>;
 
     return (
-        <div className="job-offers-page">
-            <h1 className="job-offers-title">Browse Job Offers</h1>
+        <div className="page-wrapper">
 
-            <form className="job-offers-search-form" onSubmit={handleSearch}>
-                <input
-                    type="text"
-                    placeholder="Search by job title..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="job-offers-search-input"
-                />
-                <button type="submit" className="job-offers-search-btn">Search</button>
-            </form>
+            <nav className="navbar">
+                <span className="navbar-brand">LetoCroatia</span>
+                <div className="navbar-actions">
+                    <button className="auth-btn" onClick={() => navigate('/employee-profile')}>
+                        Go to My Profile
+                    </button>
+                </div>
+            </nav>
 
-            <form className="job-offers-filter-form" onSubmit={handleFilter}>
-                <input
-                    type="text"
-                    placeholder="Location"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    className="job-offers-filter-input"/>
-                <input
-                    type="text"
-                    placeholder="Language"
-                    value={language}
-                    onChange={(e) => setLanguage(e.target.value)}
-                    className="job-offers-filter-input"
-                />
-                <input
-                    type="number"
-                    placeholder="Min salary"
-                    value={salaryMin}
-                    onChange={(e) => setSalaryMin(e.target.value)}
-                    className="job-offers-filter-input"
-                />
-                <input
-                    type="number"
-                    placeholder="Max salary"
-                    value={salaryMax}
-                    onChange={(e) => setSalaryMax(e.target.value)}
-                    className="job-offers-filter-input"/>
-                <input
-                    type="date"
-                    placeholder="Start date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    className="job-offers-filter-input"/>
-                <input
-                    type="date"
-                    placeholder="End date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    className="job-offers-filter-input"
-                />
-                <button type="submit" className="job-offers-filter-btn">Apply Filters</button>
-            </form>
+            <div className="job-offers-page">
+                <h1 className="job-offers-title">Browse Job Offers</h1>
 
-            {offers.length === 0 && (
-                <p className="job-offers-status">No job offers found.</p>
-            )}
+                <form className="job-offers-search-form" onSubmit={handleSearch}>
+                    <input
+                        type="text"
+                        placeholder="Search by job title..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="job-offers-search-input"
+                    />
+                    <button type="submit" className="job-offers-search-btn">Search</button>
+                </form>
 
-            <div className="job-offers-list">
-                {offers.map((offer) => (
-                    <div key={offer.id} className="job-offer-card">
-                        <h2 className="job-offer-card-title">{offer.title}</h2>
-                        <p className="job-offer-card-employer">{offer.business_name}</p>
-                        <p className="job-offer-card-location">{offer.work_location}</p>
-                        <p className="job-offer-card-salary">€{offer.salary} / month</p>
-                        <p className="job-offer-card-period">{offer.start_date?.slice(0, 10)} — {offer.end_date?.slice(0, 10)}</p>
-                        <div className="job-offer-card-actions">
-                            <button
-                                className="job-offer-card-btn-view"
-                                onClick={() => navigate(`/browse/${offer.id}`)}
-                            >
-                                View Details
-                            </button>
-                            <button className="job-offer-card-btn-apply">
-                                Apply
-                            </button>
+                <form className="job-offers-filter-form" onSubmit={handleFilter}>
+                    <input
+                        type="text"
+                        placeholder="Location"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        className="job-offers-filter-input"/>
+                    <input
+                        type="text"
+                        placeholder="Language"
+                        value={language}
+                        onChange={(e) => setLanguage(e.target.value)}
+                        className="job-offers-filter-input"
+                    />
+                    <input
+                        type="number"
+                        placeholder="Min salary"
+                        value={salaryMin}
+                        onChange={(e) => setSalaryMin(e.target.value)}
+                        className="job-offers-filter-input"
+                    />
+                    <input
+                        type="number"
+                        placeholder="Max salary"
+                        value={salaryMax}
+                        onChange={(e) => setSalaryMax(e.target.value)}
+                        className="job-offers-filter-input"/>
+                    <input
+                        type="date"
+                        placeholder="Start date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        className="job-offers-filter-input"/>
+                    <input
+                        type="date"
+                        placeholder="End date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        className="job-offers-filter-input"
+                    />
+                    <button type="submit" className="job-offers-filter-btn">Apply Filters</button>
+                </form>
+
+                {offers.length === 0 && (
+                    <p className="job-offers-status">No job offers found.</p>
+                )}
+
+                <div className="job-offers-list">
+                    {offers.map((offer) => (
+                        <div key={offer.id} className="job-offer-card">
+                            <h2 className="job-offer-card-title">{offer.title}</h2>
+                            <p className="job-offer-card-employer">{offer.business_name}</p>
+                            <p className="job-offer-card-location">{offer.work_location}</p>
+                            <p className="job-offer-card-salary">€{offer.salary} / month</p>
+                            <p className="job-offer-card-period">{offer.start_date?.slice(0, 10)} — {offer.end_date?.slice(0, 10)}</p>
+                            <div className="job-offer-card-actions">
+                                <button
+                                    className="job-offer-card-btn-view"
+                                    onClick={() => navigate(`/browse/${offer.id}`)}
+                                >
+                                    View Details
+                                </button>
+                                <button className="job-offer-card-btn-apply">
+                                    Apply
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
+
+            <footer className="footer">
+                <span className="footer-brand">LetoCroatia</span>
+                <div className="footer-links">
+                    <span>Privacy Policy</span>
+                    <span>Terms of Service</span>
+                    <span>Cookie Policy</span>
+                    <span>Contact Support</span>
+                </div>
+            </footer>
+
         </div>
-    );
+    )
 }
 
 export default JobOffers;
