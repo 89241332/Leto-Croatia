@@ -30,9 +30,9 @@ export default function App() {
           <Route path='/job-offers/create' element={<CreateEditJobOffer />} />
           <Route path='/job-offers/:id/edit' element={<CreateEditJobOffer />} />
           <Route path='/job-offers/:id' element={<JobOfferDetail />} />
-          <Route path="/job-offers" element={<JobOffers />} />
-          <Route path="/job-offers/search" element={<SearchResults />} />
-          <Route path="/job-offers/:id" element={<JobOfferDetailEmployee />} />
+          <Route path="/browse" element={<JobOffers />} />
+          <Route path="/browse/search" element={<SearchResults />} />
+          <Route path="/browse/:id" element={<JobOfferDetailEmployee />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
