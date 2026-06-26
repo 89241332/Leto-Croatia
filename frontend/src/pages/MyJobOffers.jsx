@@ -148,7 +148,7 @@ function MyJobOffers() {
             </footer>
 
         </div>
-    );
+    )
 }
 
 export default MyJobOffers;
