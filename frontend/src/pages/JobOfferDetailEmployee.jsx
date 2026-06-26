@@ -12,7 +12,7 @@ function JobOfferDetailEmployee() {
     useEffect(() => {
         const fetchOffer = async () => {
             try {
-                const res = await fetch(`/api/job-offers/${id}`, {
+                const res = await fetch(`/api/browse/${id}`, {
                     credentials: 'include'
                 });
                 const data = await res.json();
