@@ -63,7 +63,7 @@ function JobOfferDetailEmployee() {
                                 </span>
                             </div>
                             <div className="detail-actions">
-                                <button className="edit-btn">
+                                <button className="edit-btn" onClick={() => navigate(`/browse/${id}/apply`)}>
                                     Apply
                                 </button>
                             </div>
