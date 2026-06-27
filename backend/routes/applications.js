@@ -173,4 +173,49 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+//GET /api/applications/job-offer/:jobOfferId - get all applications for a single job offer
+router.get('/job-offer/:jobOfferId', async (req, res) => {
+    if (!req.session.user){y
+        return res.status(401).json({ error: 'Not logged in' });
+    }
+
+    const userId = req.session.user.id;
+    const { jobOfferId } = req.params;
+
+    try {
+        const [employerRows] = await pool.query(
+            'SELECT id FROM employer WHERE user_id = ?',
+            [userId]
+        );
+
+        if (employerRows.length === 0) {
+            return res.status(403).json({ error: 'Only employers can view applications for a job offer' });
+        }
+
+        const employerId = employerRows[0].id;
+
+        const [offerRows] = await pool.query(
+            `SELECT
+             a.id,
+             a.status,
+             a.submitted_at,
+             a.withdrawn_at,
+             u.first_name,
+             u.last_name
+             u.email,
+             emp.nationality
+            FROM application a
+            JOIN employee emp ON a.employee_id = emp.id
+            JOIN user u ON emp.user_id = u.id
+            WHERE a.job_offer_id = ?
+            ORDER BY a.submitted_at ASC`,
+            [jobOfferId]
+        );
+
+        res.json(rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports = router;
