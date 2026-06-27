@@ -175,7 +175,7 @@ router.delete('/:id', async (req, res) => {
 
 //GET /api/applications/job-offer/:jobOfferId - get all applications for a single job offer
 router.get('/job-offer/:jobOfferId', async (req, res) => {
-    if (!req.session.user){y
+    if (!req.session.user){
         return res.status(401).json({ error: 'Not logged in' });
     }
 
@@ -195,24 +195,85 @@ router.get('/job-offer/:jobOfferId', async (req, res) => {
         const employerId = employerRows[0].id;
 
         const [offerRows] = await pool.query(
+            'SELECT id FROM job_offer WHERE id = ? AND employer_id = ?',
+            [jobOfferId, employerId]
+        );
+
+        if (offerRows.length === 0) {
+            return res.status(404).json({ error: 'Job offer not found' });
+        }
+
+        const [rows] = await pool.query(
             `SELECT
-             a.id,
-             a.status,
-             a.submitted_at,
-             a.withdrawn_at,
-             u.first_name,
-             u.last_name
-             u.email,
-             emp.nationality
-            FROM application a
-            JOIN employee emp ON a.employee_id = emp.id
-            JOIN user u ON emp.user_id = u.id
-            WHERE a.job_offer_id = ?
-            ORDER BY a.submitted_at ASC`,
+                a.id,
+                a.status,
+                a.submitted_at,
+                a.withdrawn_at,
+                u.first_name,
+                u.last_name,
+                u.email,
+                emp.nationality
+             FROM application a
+             JOIN employee emp ON a.employee_id = emp.id
+             JOIN user u ON emp.user_id = u.id
+             WHERE a.job_offer_id = ?
+             ORDER BY a.submitted_at ASC`,
             [jobOfferId]
         );
 
         res.json(rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+//POST /api/applications/:id/status - accept or reject an application
+router.post('/:id/status', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'Not logged in' });
+    }
+
+    const userId = req.session.user.id;
+    const applicationId = req.params.id;
+    const { status } = req.body;
+
+    if (!status || !['accepted', 'rejected'].includes(status)) {
+        return res.status(400).json({ error: 'Status must be accepted or rejected' });
+    }
+
+    try {
+        const [employerRows] = await pool.query(
+            'SELECT id FROM employer WHERE user_id = ?',
+            [userId]
+        );
+
+        if (employerRows.length === 0) {
+            return res.status(403).json({ error: 'Only employers can update application status' });
+        }
+
+        const employerId = employerRows[0].id;
+        const [appRows] = await pool.query(
+            `SELECT a.id, a.status
+            FROM application a
+            JOIN job_offer jo ON a.job_offer_id = jo.id
+            WHERE a.id = ? AND jo.employer_id = ?`,
+            [applicationId, employerId]
+        );
+
+        if (appRows.length === 0) {
+            return res.status(404).json({ error: 'Application not found' });
+        }
+
+        if (appRows[0].status === 'withdrawn') {
+            return res.status(400).json({ error: 'Cannot update a withdrawn application'});
+        }
+
+        await pool.query(
+            'UPDATE application SET status = ? WHERE id = ?',
+            [status, applicationId]
+        );
+
+        res.json({ message: `Application ${status} successfully.` });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
