@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth');
 const profileRoutes = require('./routes/profile');
 const jobOffersRouter = require('./routes/jobOffers');
 const browseRoutes = require('./routes/browse');
+const applicationsRouter = require('./routes/applications');
 
 const app = express();
 const PORT = process.env.PORT || 30052;
@@ -34,6 +35,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/job-offers', jobOffersRouter);
 app.use('/api/browse', browseRoutes);
+app.use('/api/applications', applicationsRouter);
 
 // Deploy - serve React frontend
 const reactBuildPath = path.join(__dirname, './dist');

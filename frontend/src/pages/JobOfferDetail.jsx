@@ -92,6 +92,11 @@ function JobOfferDetail() {
                                 >
                                     Delete
                                 </button>
+                                <button
+                                    className="edit-btn"
+                                    onClick={() => navigate(`/job-offers/${id}/applications`)}>
+                                        View Applications
+                                    </button>
                             </div>
                         </div>
 
