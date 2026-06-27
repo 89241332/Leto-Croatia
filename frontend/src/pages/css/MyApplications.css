@@ -1,0 +1,138 @@
+.my-applications-content {
+    flex: 1;
+    padding: 40px 60px;
+}
+
+.my-applications-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.my-applications-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #001D32;
+}
+
+.btn-browse {
+    background-color: #50D9FE;
+    color: #001D32;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-browse:hover {
+    background-color: #00677D;
+    color: white;
+}
+
+.my-applications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.application-card {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.application-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.application-job-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #001D32;
+}
+
+.application-status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-received {
+    background-color: #E0F7FA;
+    color: #00677D;
+}
+
+.status-accepted {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.status-rejected {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.status-withdrawn {
+    background-color: #e5e7eb;
+    color: #6b7280;
+}
+
+.application-employer {
+    font-weight: 600;
+    color: #070A61;
+    margin-bottom: 4px;
+}
+
+.application-location {
+    color: #6b7280;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+}
+
+.application-dates {
+    color: #6b7280;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+}
+
+.application-submitted {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+
+.btn-withdraw {
+    background: none;
+    border: 1px solid #c0392b;
+    color: #c0392b;
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-family: 'Hanken Grotesk', sans-serif;
+}
+
+.btn-withdraw:hover {
+    background-color: #fee2e2;
+}
+
+.my-applications-error {
+    color: #c0392b;
+    margin-bottom: 16px;
+}
+
+.my-applications-status {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6b7280;
+    font-size: 1rem;
+}
