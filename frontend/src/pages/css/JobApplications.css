@@ -1,0 +1,138 @@
+.job-applications-content {
+    flex: 1;
+    padding: 40px 60px;
+}
+
+.job-applications-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.job-applications-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #001D32;
+}
+
+.btn-back-offer {
+    background-color: #50D9FE;
+    color: #001D32;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-back-offer:hover {
+    background-color: #00677D;
+    color: white;
+}
+
+.job-applications-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.job-applications-table th {
+    text-align: left;
+    padding: 14px 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #6b7280;
+    background-color: #f9fafb;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.job-applications-table td {
+    padding: 16px 20px;
+    border-top: 1px solid #e5e7eb;
+    font-size: 0.95rem;
+    color: #001D32;
+}
+
+.application-status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-received {
+    background-color: #E0F7FA;
+    color: #00677D;
+}
+
+.status-accepted {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.status-rejected {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.status-withdrawn {
+    background-color: #e5e7eb;
+    color: #6b7280;
+}
+
+.btn-accept {
+    background: none;
+    border: none;
+    color: #065f46;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 0;
+}
+
+.btn-accept:hover {
+    color: #00677D;
+}
+
+.btn-accept:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-reject {
+    background: none;
+    border: none;
+    color: #991b1b;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 0;
+}
+
+.btn-reject:hover {
+    color: #c0392b;
+}
+
+.btn-reject:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.job-applications-error {
+    color: #c0392b;
+    margin-bottom: 16px;
+}
+
+.job-applications-status {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6b7280;
+    font-size: 1rem;
+}
