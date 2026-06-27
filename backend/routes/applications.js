@@ -33,6 +33,54 @@ router.post('/', upload.array('documents'), async (req, res) => {
             [job_offer_id]
         );
 
-        
+        if (offerRows.length === 0 || offerRows[0].status !== 'open') {
+            return res.status(404).json({ error: 'Job offer not found or is closed' });
+        }
+
+        const [existing] = await pool.query(
+            `SELECT id
+            FROM application
+            WHERE employee_id = ? AND job_offer_id = ?`,
+            [employeeId, job_offer_id]
+        );
+
+        if (existing.length > 0) {
+            return res.status(409).json({ error: 'You have already applied for this job'});
+        }
+
+        const [requiredDocs] = await pool.query(
+            'SELECT id FROM required_document WHERE job_offer_id = ?',
+            [job_offer_id]
+        );
+
+        if (!req.files || req.files.length !== requiredDocs.length) {
+            return res.status(400).json({ error: 'You must upload one file per required document' });
+        }
+
+        const [result] = await pool.query(
+            `INSERT INTO application (employee_id, job_offer_id)
+              VALUES (?, ?)`,
+              [employeeId, job_offer_id]
+        );
+
+        const applicationId = result.insertId;
+
+        for (let i = 0; i < req.files.length; i++) {
+            const file = req.files[i];
+            const requiredDocId = requiredDocs[i].id;
+            const ext = file.originalname.split('.').pop().toLowerCase();
+
+            await pool.query(
+                `INSERT INTO application_document (application_id, required_document_id, file, file_type)
+                VALUES (?, ?, ?, ?)`,
+                [applicationId, requiredDocId, file.path, ext]
+            );
+        }
+
+        res.status(201).json({ message: 'Application submitted successfully', application_id: applicationId});
+    } catch (error) {
+        res.status(500).json({ error: error.message});
     }
-})
+});
+
+module.exports = router;
