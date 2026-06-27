@@ -127,4 +127,50 @@ router.get('/my', async (req, res) => {
     }
 });
 
+//DELETE method /api/applications/:id - delete application
+router.delete('/:id', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'Not logged in' });
+    }
+
+    const userId = req.session.user.id;
+    const applicationId = req.params.id;
+
+    try {
+        const [employeeRows] = await pool.query(
+            'SELECT id FROM employee WHERE user_id = ?',
+            [userId]
+        );
+
+        if (employeeRows.length === 0) {
+            return res.status(403).json({ error: 'Only employees can delete applications' });
+        }
+
+        const employeeId = employeeRows[0].id;
+
+        const [appRows] = await pool.query(
+            'SELECT id, status FROM application WHERE id = ? AND employee_id = ?',
+            [applicationId, employeeId]
+        );
+
+        if (appRows.length === 0) {
+            return res.status(404).json({ error: 'Application not found' });
+        }
+
+        if (appRows[0].status === 'accepted') {
+            return res.status(400).json({ error: 'Cannot withdraw an accepted application'});
+        }
+
+        await pool.query(
+            `UPDATE application SET status = 'withdrawn', withdrawn_at = NOW()
+            WHERE id = ?`,
+            [applicationId]
+        );
+
+        res.json({ message: 'Application withdrawn successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports = router;
