@@ -81,7 +81,7 @@ function SearchResults() {
                                 >
                                     View Details
                                 </button>
-                                <button className="search-result-card-btn-apply">
+                                <button className="search-result-card-btn-apply" onClick={() => navigate(`/browse/${offer.id}/apply`)}>
                                     Apply
                                 </button>
                             </div>

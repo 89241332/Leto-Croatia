@@ -162,7 +162,7 @@ function JobOffers() {
                                 >
                                     View Details
                                 </button>
-                                <button className="job-offer-card-btn-apply">
+                                <button className="job-offer-card-btn-apply" onClick={() => navigate(`/browse/${offer.id}/apply`)}>
                                     Apply
                                 </button>
                             </div>
