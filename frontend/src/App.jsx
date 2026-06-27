@@ -15,6 +15,7 @@ import SearchResults from './pages/SearchResults'
 import JobOfferDetailEmployee from './pages/JobOfferDetailEmployee'
 import ApplyPage from './pages/ApplyPage'
 import MyApplications from './pages/MyApplications'
+import JobApplications from './pages/JobApplications'
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="/browse/:id" element={<JobOfferDetailEmployee />} />
           <Route path="/browse/:id/apply" element={<ApplyPage />} />
           <Route path="/my-applications" element={<MyApplications />} />
+          <Route path="/job-offers/:id/applications" element={<JobApplications />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
