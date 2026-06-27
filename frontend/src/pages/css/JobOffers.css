@@ -164,3 +164,8 @@
     background-color: #00677D;
     color: #fff;
 }
+
+.browse-navbar-buttons {
+    display: flex;
+    gap: 12px;
+}

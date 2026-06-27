@@ -66,7 +66,7 @@ function JobApplications() {
                 <span className="navbar-brand">LetoCroatia</span>
                 <div className="navbar-actions">
                     <button className="auth-btn" onClick={() => navigate('/employer-profile')}>
-                        My Profile
+                        Go to My Profile
                     </button>
                 </div>
             </nav>

@@ -80,9 +80,14 @@ function JobOffers() {
             <nav className="navbar">
                 <span className="navbar-brand">LetoCroatia</span>
                 <div className="navbar-actions">
-                    <button className="auth-btn" onClick={() => navigate('/employee-profile')}>
-                        Go to My Profile
-                    </button>
+                    <div className="browse-navbar-buttons">
+                        <button className="auth-btn" onClick={() => navigate('/my-applications')}>
+                            View My Applications
+                        </button>
+                        <button className="auth-btn" onClick={() => navigate('/employee-profile')}>
+                            Go to My Profile
+                        </button>
+                    </div>
                 </div>
             </nav>
 
