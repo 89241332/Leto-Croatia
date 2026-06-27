@@ -79,38 +79,59 @@ function ApplyPage() {
     if (loading) return <p className="job-offers-status">Loading...</p>;
 
     return (
-        <div className="apply-page">
-            <div className="apply-card">
-                <button className="btn-back" onClick={() => navigate(`/browse/${id}`)}>Back</button>
-                <h2 className="apply-title">Apply for: {jobOffer.title}</h2>
-                <p className="apply-subtitle">Upload the required documents below.</p>
+        <div className="page-wrapper">
 
-                <div className="apply-documents">
-                    {jobOffer.required_documents.map((doc, index) => (
-                        <div className="apply-document-item" key={doc.id}>
-                            <p className="document-name">{doc.document_name}</p>
-                            {doc.description && (
-                                <p className="document-description">{doc.description}</p>
-                            )}
-                            <input
-                                type="file"
-                                accept=".pdf,.jpg,.jpeg,.png"
-                                onChange={(e) => handleFileChange(index, e.target.files[0])}
-                            />
-                        </div>
-                    ))}
+            <nav className="navbar">
+                <span className="navbar-brand">LetoCroatia</span>
+                <div className="navbar-actions">
+                    <button className="auth-btn" onClick={() => navigate('/employer-profile')}>
+                        Go to My Profile
+                    </button>
                 </div>
+            </nav>
 
-                {error && <p className="apply-error">{error}</p>}
+                <div className="apply-page">
+                    <div className="apply-card">
+                        <button className="btn-back" onClick={() => navigate(`/browse/${id}`)}>Back</button>
+                        <h2 className="apply-title">Apply for: {jobOffer.title}</h2>
+                        <p className="apply-subtitle">Upload the required documents below.</p>
 
-                <button
-                    className="btn-submit"
-                    onClick={handleSubmit}
-                    disabled={submitting}
-                >
-                    {submitting ? 'Submitting...' : 'Submit Application'}
-                </button>
-            </div>
+                        <div className="apply-documents">
+                            {jobOffer.required_documents.map((doc, index) => (
+                                <div className="apply-document-item" key={doc.id}>
+                                    <p className="document-name">{doc.document_name}</p>
+                                    {doc.description && (
+                                        <p className="document-description">{doc.description}</p>
+                                    )}
+                                    <input
+                                        type="file"
+                                        accept=".pdf,.jpg,.jpeg,.png"
+                                        onChange={(e) => handleFileChange(index, e.target.files[0])}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+
+                        {error && <p className="apply-error">{error}</p>}
+
+                        <button
+                            className="btn-submit"
+                            onClick={handleSubmit}
+                            disabled={submitting}
+                        >
+                            {submitting ? 'Submitting...' : 'Submit Application'}
+                        </button>
+                    </div>
+                </div>
+            <footer className="footer">
+                <span className="footer-brand">LetoCroatia</span>
+                <div className="footer-links">
+                    <span>Privacy Policy</span>
+                    <span>Terms of Service</span>
+                    <span>Cookie Policy</span>
+                    <span>Contact Support</span>
+                </div>
+            </footer>
         </div>
     )
 }
