@@ -83,4 +83,48 @@ router.post('/', upload.array('documents'), async (req, res) => {
     }
 });
 
+//GET /api/applications/my - get applications for logged in employee
+router.get('/my', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'Not logged in' });
+    }
+
+    const userId = req.session.user.id;
+
+    try {
+        const [employeeRows] = await pool.query(
+            'SELECT id FROM employee WHERE user_id = ?',
+            [userId]
+        );
+
+        if (employeeRows.length === 0) {
+            return res.status(403).json({ error: 'Only employees can access this' });
+        }
+
+        const employeeId = employeeRows[0].id;
+
+        const [rows] = await pool.query(
+            `SELECT a.id,
+                    a.status,
+                    a.submitted_at,
+                    a.withdrawn_at,
+                    jo.title,
+                    jo.work_location,
+                    jo.start_date,
+                    jo.end_date,
+                    e.business_name
+            FROM application a
+            JOIN job_offer jo ON a.job_offer_id = jo.id
+            JOIN employer e ON jo.employer_id = e.id
+            WHERE a.employee_id = ?
+            ORDER BY a.submitted_at DESC`,
+            [employeeId]
+        );
+
+        res.json(rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports = router;
