@@ -1,0 +1,32 @@
+.profile-view-row {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.profile-view-row:last-child {
+    border-bottom: none;
+}
+
+.profile-view-label {
+    font-weight: 600;
+    color: #001D32;
+    min-width: 140px;
+}
+
+.profile-view-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.logout-btn {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    background-color: #001D32;
+    color: #fff;
+}

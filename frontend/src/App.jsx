@@ -41,7 +41,7 @@ export default function App() {
           <Route path="/browse/:id/apply" element={<ApplyPage />} />
           <Route path="/my-applications" element={<MyApplications />} />
           <Route path="/job-offers/:id/applications" element={<JobApplications />} />
-          <Route path="/profile" element={<EmployeeProfileView />} />
+          <Route path="/employee-profile-view" element={<EmployeeProfileView />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
