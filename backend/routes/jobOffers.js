@@ -208,9 +208,15 @@ router.get('/:id', async (req, res) => {
             [job_offer_id]
         );
 
+        const [images] = await pool.query(
+            'SELECT id, file FROM job_offer_image WHERE job_offer_id = ?',
+            [job_offer_id]
+        );
+
         const jobOffer = jobOffers[0];
         jobOffer.required_documents = requiredDocuments;
         jobOffer.language_requirements = languageRequirements;
+        jobOffer.images = images;
 
         return res.status(200).json(jobOffer);
 
