@@ -17,6 +17,7 @@ import ApplyPage from './pages/ApplyPage'
 import MyApplications from './pages/MyApplications'
 import JobApplications from './pages/JobApplications'
 import EmployeeProfileView from './pages/EmployeeProfileView'
+import EmployerProfileView from './pages/EmployerProfileView'
 
 export default function App() {
   return (
@@ -42,6 +43,7 @@ export default function App() {
           <Route path="/my-applications" element={<MyApplications />} />
           <Route path="/job-offers/:id/applications" element={<JobApplications />} />
           <Route path="/employee-profile-view" element={<EmployeeProfileView />} />
+          <Route path="/employer-profile-view" element={<EmployerProfileView />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

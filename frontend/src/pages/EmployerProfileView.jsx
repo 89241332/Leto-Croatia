@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import './css/EmployerProfileView';
+import './css/EmployerProfileView.css';
 
 function EmployerProfileView() {
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ function EmployerProfileView() {
                 const res = await fetch('/api/profile', {
                     credentials: 'include'
                 })
-                const data = await response.json();
+                const data = await res.json();
 
                 if (!res.ok) {
                     navigate('/login');
