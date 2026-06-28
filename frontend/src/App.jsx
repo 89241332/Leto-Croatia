@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import Register from './pages/Register'
 import RegisterEmployee from './pages/RegisterEmployee'
@@ -22,6 +22,7 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+          <Route path='/' element={<Navigate to="/browse" replace />} />
           <Route path='/register' element={<Register />} />
           <Route path='/register/employee' element={<RegisterEmployee />} />
           <Route path='/register/employer' element={<RegisterEmployer />} />
