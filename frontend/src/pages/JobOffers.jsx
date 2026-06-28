@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './css/JobOffers.css';
 
 function JobOffers() {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [offers, setOffers] = useState([])
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(true)
@@ -167,7 +169,7 @@ function JobOffers() {
                                 >
                                     View Details
                                 </button>
-                                <button className="job-offer-card-btn-apply" onClick={() => navigate(`/browse/${offer.id}/apply`)}>
+                                <button className="job-offer-card-btn-apply" onClick={() => user ? navigate(`/browse/${offer.id}/apply`) : navigate('/login')}>
                                     Apply
                                 </button>
                             </div>
