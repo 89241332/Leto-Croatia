@@ -159,6 +159,22 @@ function JobOfferDetailEmployee() {
                                 </ul>
                             )}
                         </div>
+                        
+                        {offer.images && offer.images.length > 0 && (
+                            <div className="detail-section">
+                                <h2 className="detail-section-title">Photos</h2>
+                                <div className="detail-images">
+                                    {offer.images.map(img => (
+                                        <img
+                                            key={img.id}
+                                            src={`http://88.200.63.148:30052/${img.file}`}
+                                            alt="Job offer"
+                                            className="detail-image"
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </>
                 )}
             </div>
