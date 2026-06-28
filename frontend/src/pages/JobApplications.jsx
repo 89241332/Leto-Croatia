@@ -93,6 +93,7 @@ function JobApplications() {
                                 <th>Nationality</th>
                                 <th>Submitted</th>
                                 <th>Status</th>
+                                <th>Documents</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -106,6 +107,22 @@ function JobApplications() {
                                         <span className={`application-status status-${app.status}`}>
                                             {app.status}
                                         </span>
+                                    </td>
+                                    <td>
+                                        {app.documents && app.documents.length > 0 ? (
+                                            app.documents.map((doc, index) => (
+                                                <a
+                                                    key={index}
+                                                    href={`http://88.200.63.148:30052/${doc.file}`}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="doc-link"
+                                                >
+                                                    {doc.document_name}</a>
+                                            ))
+                                        ) : (
+                                            <span>No documents</span>
+                                        )}
                                     </td>
                                     <td>
                                         {app.status !== 'withdrawn' && (

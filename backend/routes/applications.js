@@ -221,6 +221,17 @@ router.get('/job-offer/:jobOfferId', async (req, res) => {
             [jobOfferId]
         );
 
+        for (const application of rows) {
+            const [docs] = await pool.query(
+                `SELECT ad.file, ad.file_type, rd.document_name
+                FROM application_document ad
+                JOIN required_document rd ON ad.required_document_id = rd.id
+                WHERE ad.application_id = ?`,
+                [application.id]
+            );
+            application.documents = docs
+        }
+
         res.json(rows);
     } catch (error) {
         res.status(500).json({ error: error.message });
