@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './css/JobOfferDetailEmployee.css';
 
 function JobOfferDetailEmployee() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [offer, setOffer] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -63,7 +65,7 @@ function JobOfferDetailEmployee() {
                                 </span>
                             </div>
                             <div className="detail-actions">
-                                <button className="edit-btn" onClick={() => navigate(`/browse/${id}/apply`)}>
+                                <button className="edit-btn" onClick={() => user ? navigate(`/browse/${id}/apply`) : navigate('/login')}>
                                     Apply
                                 </button>
                             </div>
@@ -159,6 +161,22 @@ function JobOfferDetailEmployee() {
                                 </ul>
                             )}
                         </div>
+                        
+                        {offer.images && offer.images.length > 0 && (
+                            <div className="detail-section">
+                                <h2 className="detail-section-title">Photos</h2>
+                                <div className="detail-images">
+                                    {offer.images.map(img => (
+                                        <img
+                                            key={img.id}
+                                            src={`http://88.200.63.148:30052/${img.file}`}
+                                            alt="Job offer"
+                                            className="detail-image"
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </>
                 )}
             </div>
