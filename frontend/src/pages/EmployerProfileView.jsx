@@ -97,6 +97,7 @@ function EmployerProfileView() {
                     <div className="profile-view-actions">
                         <button className="auth-btn" onClick={() => navigate('/employer-profile')}>Edit Profile</button>
                         <button className="logout-btn" onClick={handleLogout}>Log Out</button>
+                        <button className="auth-btn" onClick={() => navigate('/job-offers')}>Back</button>
                     </div>
                 </div>
             </div>

@@ -169,6 +169,8 @@ function EmployerProfile() {
                     >
                         {saving ? 'Saving...' : 'Save Changes'}
                     </button>
+                    { ' ' }
+                    <button className="auth-btn" onClick={() => navigate('/employer-profile-view')}>Back</button>
                 </div>
             </div>
 
