@@ -47,3 +47,27 @@ router.delete('/users/:id', async (req, res) => {
         return res.status(500).json({ error: 'Server error.' });
     }
 });
+
+//GET /api/admin/job-offer - get all job offers
+router.get('/job-offers', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'Not logged in.' });
+    }
+
+    if (req.session.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Access denied.' });
+    }
+
+    try {
+        const [jobOffers] = await pool.query(
+            `SELECT jo.id, jo.title, jo.status, jo.created_at, u.first_name, u.last_name
+            FROM job_offer jo
+            JOIN employer e ON jo.employer_id = e.id
+            JOIN user u ON e.user_id = u.id`
+        );
+        return res.status(200).json(jobOffers);
+    } catch (err) {
+        console.error(err);
+        return req.status(500).json({ error: 'Server error.' });
+    }
+});
