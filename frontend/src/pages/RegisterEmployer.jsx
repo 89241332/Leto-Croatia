@@ -53,7 +53,7 @@ export default function RegisterEmployer() {
                 return
             }
 
-            navigate('/')
+            navigate('/login')
         } catch (err) {
             setError('Something went wrong. Please try again.')
             setLoading(false)

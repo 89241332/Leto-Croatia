@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import Register from './pages/Register'
 import RegisterEmployee from './pages/RegisterEmployee'
@@ -16,12 +16,16 @@ import JobOfferDetailEmployee from './pages/JobOfferDetailEmployee'
 import ApplyPage from './pages/ApplyPage'
 import MyApplications from './pages/MyApplications'
 import JobApplications from './pages/JobApplications'
+import EmployeeProfileView from './pages/EmployeeProfileView'
+import EmployerProfileView from './pages/EmployerProfileView'
+import Admin from './pages/Admin'
 
 export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+          <Route path='/' element={<Navigate to="/browse" replace />} />
           <Route path='/register' element={<Register />} />
           <Route path='/register/employee' element={<RegisterEmployee />} />
           <Route path='/register/employer' element={<RegisterEmployer />} />
@@ -39,6 +43,9 @@ export default function App() {
           <Route path="/browse/:id/apply" element={<ApplyPage />} />
           <Route path="/my-applications" element={<MyApplications />} />
           <Route path="/job-offers/:id/applications" element={<JobApplications />} />
+          <Route path="/employee-profile-view" element={<EmployeeProfileView />} />
+          <Route path="/employer-profile-view" element={<EmployerProfileView />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

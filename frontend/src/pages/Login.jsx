@@ -31,7 +31,7 @@ function Login() {
 
             await refreshUser();
             const role = data.user.role;
-            navigate(role === 'employer' ? '/job-offers' : '/browse');
+            navigate(role === 'employer' ? '/job-offers' : role === 'admin' ? '/admin' : '/browse');
         } catch (err) {
             setError('Something went wrong. Please try again!');
             setLoading(false);
