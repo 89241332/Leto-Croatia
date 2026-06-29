@@ -34,6 +34,10 @@ router.delete('/users/:id', async (req, res) => {
         return res.status(403).json({ error: 'Access denied.' });
     }
 
+    if (parseInt(req.params.id) === req.session.user.id) {
+        return res.status(400).json({ error: 'You cannot delete your own account.' });
+    }
+
     const { id } = req.params;
     
     try {
