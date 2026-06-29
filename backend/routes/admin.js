@@ -37,6 +37,69 @@ router.delete('/users/:id', async (req, res) => {
     const { id } = req.params;
     
     try {
+        const [users] = await pool.query(
+            'SELECT role FROM user WHERE id = ?',
+            [id]
+        );
+
+        if (users.length === 0) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+
+        const role = users[0].role;
+
+        if (role === 'employee') {
+            const [applications] = await pool.query(
+                'SELECT id FROM application WHERE employee_id = ?',
+                [id]
+            );
+            for (const app of applications) {
+                await pool.query(
+                    'DELETE FROM application_document WHERE application_id = ?',
+                    [app.id]
+                );
+            }
+            await pool.query('DELETE FROM application WHERE employee_id = ?', [id]);
+            await pool.query('DELETE FROM employee WHERE user_id = ?', [id]);
+        }
+
+        if (role === 'employer') {
+            const [employers] = await pool.query(
+                'SELECT id FROM employer WHERE user_id = ?', 
+                [id]
+            );
+
+            if (employers.length > 0) {
+                const employer_id = employers[0].id;
+
+                const [jobOffers] = await pool.query(
+                    'SELECT id FROM job_offer WHERE employer_id = ?',
+                    [employer_id]
+                );
+
+                for (const offer of jobOffers) {
+                    const [applications] = await pool.query(
+                        'SELECT id FROM application WHERE job_offer_id = ?',
+                        [offer.id]
+                    );
+                    for (const app of applications) {
+                        await pool.query(
+                            'DELETE FROM application_document WHERE application_id = ?',
+                            [app.id]
+                        );
+                    }
+                    await pool.query('DELETE FROM application WHERE job_offer_id = ?', [offer.id]);
+                    await pool.query('DELETE FROM job_offer_image WHERE job_offer_id = ?', [offer.id]);
+                    await pool.query('DELETE FROM language_requirement WHERE job_offer_id = ?', [offer.id]);
+                    await pool.query('DELETE FROM required_document WHERE job_offer_id = ?', [offer.id]);
+                    await pool.query('DELETE FROM accommodation WHERE job_offer_id = ?', [offer.id]);
+                    await pool.query('DELETE FROM job_offer WHERE id = ?', [offer.id]);
+                }
+
+                await pool.query('DELETE FROM employer WHERE user_id = ?', [id]);
+            }
+        }
+
         await pool.query(
             'DELETE FROM user WHERE id = ?',
             [id]
@@ -85,10 +148,25 @@ router.delete('/job-offers/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        await pool.query(
-            'DELETE FROM job_offer WHERE id = ?',
+        const [applications] = await pool.query(
+            'SELECT id FROM application WHERE job_offer_id = ?',
             [id]
         );
+
+        for (const app of applications) {
+            await pool.query(
+                'DELETE FROM application_document WHERE application_id = ?',
+                [app.id]
+            );
+        }
+
+        await pool.query('DELETE FROM application WHERE job_offer_id = ?', [id]);
+        await pool.query('DELETE FROM accommodation WHERE job_offer_id = ?', [id]);
+        await pool.query('DELETE FROM required_document WHERE job_offer_id = ?', [id]);
+        await pool.query('DELETE FROM language_requirement WHERE job_offer_id = ?', [id]);
+        await pool.query('DELETE FROM job_offer_image WHERE job_offer_id = ?', [id]);
+        await pool.query('DELETE FROM job_offer WHERE id = ?', [id]);
+
         return res.status(200).json({ message: 'Job offer deleted.' });
     } catch (err) {
         console.error(err);
