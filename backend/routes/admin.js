@@ -95,3 +95,5 @@ router.delete('/job-offers/:id', async (req, res) => {
         return res.status(500).json({ error: 'Server error.'});
     }
 });
+
+module.exports = router;
