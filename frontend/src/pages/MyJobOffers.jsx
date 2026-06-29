@@ -60,7 +60,7 @@ function MyJobOffers() {
             <nav className="navbar">
                 <span className="navbar-brand">LetoCroatia</span>
                 <div className="navbar-actions">
-                    <button className="auth-btn" onClick={() => navigate('/employer-profile')}>
+                    <button className="auth-btn" onClick={() => navigate('/employer-profile-view')}>
                         Go to My Profile
                     </button>
                 </div>

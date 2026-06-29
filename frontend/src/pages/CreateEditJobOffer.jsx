@@ -111,7 +111,7 @@ function CreateEditJobOffer() {
             <nav className="navbar">
                 <span className="navbar-brand">LetoCroatia</span>
                 <div className="navbar-actions">
-                    <button className="auth-btn" onClick={() => navigate('/employer-profile')}>Go to My Profile</button>
+                    <button className="auth-btn" onClick={() => navigate('/employer-profile-view')}>Go to My Profile</button>
                 </div>
             </nav>
 

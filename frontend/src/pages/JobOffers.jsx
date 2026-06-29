@@ -86,7 +86,7 @@ function JobOffers() {
                         <button className="auth-btn" onClick={() => navigate('/my-applications')}>
                             View My Applications
                         </button>
-                        <button className="auth-btn" onClick={() => navigate('/employee-profile')}>
+                        <button className="auth-btn" onClick={() => navigate('/employee-profile-view')}>
                             Go to My Profile
                         </button>
                     </div>

@@ -44,7 +44,7 @@ function SearchResults() {
             <nav className="navbar">
                 <span className="navbar-brand">LetoCroatia</span>
                 <div className="navbar-actions">
-                    <button className="auth-btn" onClick={() => navigate('/employee-profile')}>
+                    <button className="auth-btn" onClick={() => navigate('/employee-profile-view')}>
                         Go to My Profile
                     </button>
                 </div>
