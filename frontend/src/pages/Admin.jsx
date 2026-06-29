@@ -80,6 +80,14 @@ function Admin() {
         }
     }
 
+    async function handleLogout() {
+        await fetch('/api/auth/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
+        navigate('/login');
+    }
+
     if (loading) return <p>Loading...</p>
     if (error) return <p>{error}</p>
 
@@ -92,7 +100,7 @@ function Admin() {
 
             <div className="admin-page">
                 <h2 className="admin-title">Admin Panel</h2>
-
+                <button className="logout-btn" onClick={handleLogout}>Log Out</button>
                 <div className="admin-section">
                     <h3 className="admin-section-title">Users</h3>
                     <table className="admin-table">

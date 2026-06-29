@@ -40,12 +40,12 @@ app.use('/api/applications', applicationsRouter);
 app.use('/api/admin', adminRoutes);
 
 // Deploy - serve React frontend
-/*const reactBuildPath = path.join(__dirname, './dist');
+const reactBuildPath = path.join(__dirname, './dist');
 app.use(express.static(reactBuildPath));
 app.get('/*splat', (req, res) => {
     res.sendFile(path.join(reactBuildPath, 'index.html'));
 });
-*/
+
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
 });
