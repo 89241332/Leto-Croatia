@@ -38,6 +38,10 @@ router.get('/', async (req, res) => {
             );
             return res.status(200).json({ ...user, ...employers[0] });
         }
+
+        if (role === 'admin') {
+            return res.status(200).json(user);
+        }
     } catch (err) {
         console.error(err);
         return res.status(500).json({ error: 'Server error.' });
