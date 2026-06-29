@@ -30,7 +30,7 @@ router.delete('/users/:id', async (req, res) => {
         return res.status(401).json({ error: 'Not logged in.' });
     }
 
-    if (res.session.user.role !== 'admin') {
+    if (req.session.user.role !== 'admin') {
         return res.status(403).json({ error: 'Access denied.' });
     }
 
@@ -68,7 +68,7 @@ router.get('/job-offers', async (req, res) => {
         return res.status(200).json(jobOffers);
     } catch (err) {
         console.error(err);
-        return req.status(500).json({ error: 'Server error.' });
+        return res.status(500).json({ error: 'Server error.' });
     }
 });
 
